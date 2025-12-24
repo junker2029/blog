@@ -23,8 +23,8 @@ export const PostDetail = (post) => {
          <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);"></div>
       </div>
 
-          이제 Antigravity와 함께 멋진 블로그를 계속해서 발전시켜 나가보세요.
-        </p>
+      <div class="post-content" style="font-size: 1.125rem; line-height: 1.8; color: var(--color-text-secondary);">
+        ${post.content || '<p>내용이 없습니다.</p>'}
       </div>
     </article>
   `;

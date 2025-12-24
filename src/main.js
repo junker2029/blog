@@ -3,15 +3,41 @@ import { Header } from './components/Header.js'
 import { PostCard } from './components/PostCard.js'
 import { Footer } from './components/Footer.js'
 import { PostDetail } from './components/PostDetail.js'
-import { posts } from './data/posts.js'
+import { fetchPosts } from './api/github.js'
 
 // State
 let state = {
   view: 'home',
-  postId: null
+  postId: null,
+  posts: [],
+  isLoading: true,
+  error: null
 };
 
 // Render Functions
+const renderLoading = () => {
+  return `
+        ${Header()}
+        <main class="container" style="padding: 10rem 0; text-align: center;">
+            <div style="font-size: 1.5rem; color: var(--color-text-secondary); animation: pulse 1.5s infinite;">
+                블로그 글을 불러오는 중입니다...
+            </div>
+        </main>
+        ${Footer()}
+    `;
+};
+
+const renderError = () => {
+  return `
+        ${Header()}
+         <main class="container" style="padding: 10rem 0; text-align: center;">
+            <h2 style="font-size: 2rem; margin-bottom: 1rem;">문제가 발생했습니다.</h2>
+            <p style="color: var(--color-text-secondary);">${state.error || '데이터를 불러올 수 없습니다.'}</p>
+        </main>
+        ${Footer()}
+    `;
+};
+
 const renderHome = () => {
   return `
     ${Header()}
@@ -22,8 +48,8 @@ const renderHome = () => {
       혁신적인 아이디어의 시작
     </h1>
     <p style="font-size: 1.25rem; color: var(--color-text-secondary); max-width: 600px; margin: 0 auto 2.5rem;">
-      기술, 디자인, 그리고 미래에 대한 깊이 있는 이야기를 나눕니다.<br>
-        매주 새로운 인사이트를 만나보세요.
+      GitHub Issues로 작성된 생생한 개발 이야기를 만나보세요.<br>
+        매주 새로운 인사이트가 업데이트됩니다.
     </p>
     <div style="display: flex; justify-content: center; gap: 1rem;">
       <button class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2rem;">최신 글 보기</button>
@@ -37,13 +63,18 @@ const renderHome = () => {
       <a href="#" style="font-weight: 500;">전체 보기 &rarr;</a>
     </div>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
-      ${posts.map(post => `
-                <div class="post-link" data-id="${post.id}">
-                  ${PostCard(post)}
-                </div>
-              `).join('')}
-    </div>
+    ${state.posts.length === 0 ?
+      `<div style="text-align: center; padding: 4rem; color: var(--color-text-secondary); background: #1e293b; border-radius: 1rem;">
+         <p style="font-size: 1.2rem;">아직 작성된 글이 없습니다.</p>
+       </div>` :
+      `<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
+        ${state.posts.map(post => `
+                  <div class="post-link" data-id="${post.id}">
+                    ${PostCard(post)}
+                  </div>
+                `).join('')}
+      </div>`
+    }
   </section>
 </main>
 
@@ -52,7 +83,7 @@ const renderHome = () => {
 };
 
 const renderDetail = (id) => {
-  const post = posts.find(p => p.id === parseInt(id));
+  const post = state.posts.find(p => p.id === parseInt(id));
   if (!post) return renderHome();
 
   return `
@@ -65,6 +96,16 @@ const renderDetail = (id) => {
 const render = () => {
   const app = document.querySelector('#app');
   window.scrollTo(0, 0);
+
+  if (state.isLoading) {
+    app.innerHTML = renderLoading();
+    return;
+  }
+
+  if (state.error) {
+    app.innerHTML = renderError();
+    return;
+  }
 
   if (state.view === 'home') {
     app.innerHTML = renderHome();
@@ -115,10 +156,21 @@ const setupGlobalEvents = () => {
   });
 };
 
-// Initial Setup
-setupGlobalEvents();
-render();
+const init = async () => {
+  setupGlobalEvents();
+  render(); // Show loading state
 
-// Initial Render
-render();
+  try {
+    state.posts = await fetchPosts();
+    state.isLoading = false;
+    render(); // Show data
+  } catch (err) {
+    state.error = '데이터를 불러오는 중 오류가 발생했습니다.';
+    state.isLoading = false;
+    render();
+  }
+};
+
+// Start
+init();
 
