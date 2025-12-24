@@ -15,7 +15,11 @@ export const PostDetail = (post) => {
         </div>
       </header>
       
-      <div style="height: 400px; background: ${post.imageColor}; border-radius: 1rem; margin-bottom: 3rem; position: relative; overflow: hidden;">
+      <div style="height: 400px; background: ${post.imageColor || '#1e293b'}; border-radius: 1rem; margin-bottom: 3rem; position: relative; overflow: hidden;">
+         ${post.image ?
+      `<img src="${post.image}" alt="${post.title}" style="width: 100%; height: 100%; object-fit: cover;" />` :
+      `<div style="width: 100%; height: 100%; background: ${post.imageColor};"></div>`
+    }
          <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);"></div>
       </div>
 

@@ -75,5 +75,20 @@ export const posts = [
         <li>이미지 그라데이션 색상을 변경하여 분위기를 바꿀 수 있습니다.</li>
       </ul>
     `
+    },
+    {
+        id: 8,
+        category: '사진',
+        title: '이미지가 포함된 포스트 예시',
+        excerpt: '이제 블로그에 멋진 커버 이미지를 추가할 수 있습니다. 이미지를 넣는 방법을 확인해보세요.',
+        author: '관리자',
+        date: '2025년 12월 25일',
+        image: '/blog/images/tech.png', // GitHub Pages 배포 시 /blog/ 경로 필요
+        content: `
+      <p>커버 이미지가 적용된 포스트입니다.</p>
+      <p>본문에도 이미지를 넣을 수 있습니다:</p>
+      <img src="/blog/images/design.png" alt="샘플 이미지" style="width: 100%; border-radius: 8px; margin: 2rem 0;">
+      <p>위와 같이 <code>&lt;img&gt;</code> 태그를 사용하여 본문 중간에 이미지를 삽입할 수 있습니다.</p>
+    `
     }
 ];
