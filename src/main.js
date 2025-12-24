@@ -3,7 +3,7 @@ import { Header } from './components/Header.js'
 import { PostCard } from './components/PostCard.js'
 import { Footer } from './components/Footer.js'
 import { PostDetail } from './components/PostDetail.js'
-import { fetchPosts } from './api/github.js'
+import { fetchPosts } from './api/posts.js'
 
 // State
 let state = {
