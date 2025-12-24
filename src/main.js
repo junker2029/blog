@@ -2,6 +2,7 @@ import './style.css'
 import { Header } from './components/Header.js'
 import { PostCard } from './components/PostCard.js'
 import { Footer } from './components/Footer.js'
+import { PostDetail } from './components/PostDetail.js'
 import { posts } from './data/posts.js'
 
 // State
@@ -63,57 +64,60 @@ const renderDetail = (id) => {
 
 const render = () => {
   const app = document.querySelector('#app');
+  window.scrollTo(0, 0);
 
   if (state.view === 'home') {
     app.innerHTML = renderHome();
   } else if (state.view === 'detail') {
     app.innerHTML = renderDetail(state.postId);
   }
-
-  // Re-attach event listeners
-  attachListeners();
 };
 
-const attachListeners = () => {
-  // Mobile Nav / Links
-  document.querySelectorAll('a[href="#"]').forEach(el => {
-    el.addEventListener('click', (e) => e.preventDefault());
-  });
+const setupGlobalEvents = () => {
+  const app = document.querySelector('#app');
 
-  // Post Click
-  document.querySelectorAll('.post-link').forEach(el => {
-    el.addEventListener('click', (e) => {
-      // Find closest card or handle bubble
-      const id = el.dataset.id;
+  app.addEventListener('click', (e) => {
+    // 1. Post Click (Delegation)
+    const postLink = e.target.closest('.post-link');
+    if (postLink) {
+      e.preventDefault();
+      const id = postLink.dataset.id;
       state.view = 'detail';
       state.postId = id;
-      window.scrollTo(0, 0);
       render();
-    });
-  });
+      return;
+    }
 
-  // Back to Home
-  const backBtn = document.getElementById('back-home');
-  if (backBtn) {
-    backBtn.addEventListener('click', (e) => {
+    // 2. Back to Home Click
+    const backBtn = e.target.closest('#back-home');
+    if (backBtn) {
       e.preventDefault();
       state.view = 'home';
       state.postId = null;
-      window.scrollTo(0, 0);
       render();
-    });
-  }
+      return;
+    }
 
-  // Header Logo Click
-  const logo = document.querySelector('header a[href="/"]');
-  if (logo) {
-    logo.addEventListener('click', (e) => {
+    // 3. Logo Click
+    const logo = e.target.closest('header a[href="/"]');
+    if (logo) {
       e.preventDefault();
       state.view = 'home';
       render();
-    });
-  }
+      return;
+    }
+
+    // 4. Dummy Links
+    const dummyLink = e.target.closest('a[href="#"]');
+    if (dummyLink) {
+      e.preventDefault();
+    }
+  });
 };
+
+// Initial Setup
+setupGlobalEvents();
+render();
 
 // Initial Render
 render();
