@@ -1,4 +1,4 @@
-(function(){const i=document.createElement("link").relList;if(i&&i.supports&&i.supports("modulepreload"))return;for(const t of document.querySelectorAll('link[rel="modulepreload"]'))n(t);new MutationObserver(t=>{for(const o of t)if(o.type==="childList")for(const s of o.addedNodes)s.tagName==="LINK"&&s.rel==="modulepreload"&&n(s)}).observe(document,{childList:!0,subtree:!0});function r(t){const o={};return t.integrity&&(o.integrity=t.integrity),t.referrerPolicy&&(o.referrerPolicy=t.referrerPolicy),t.crossOrigin==="use-credentials"?o.credentials="include":t.crossOrigin==="anonymous"?o.credentials="omit":o.credentials="same-origin",o}function n(t){if(t.ep)return;t.ep=!0;const o=r(t);fetch(t.href,o)}})();const d=()=>`
+(function(){const r=document.createElement("link").relList;if(r&&r.supports&&r.supports("modulepreload"))return;for(const t of document.querySelectorAll('link[rel="modulepreload"]'))s(t);new MutationObserver(t=>{for(const o of t)if(o.type==="childList")for(const n of o.addedNodes)n.tagName==="LINK"&&n.rel==="modulepreload"&&s(n)}).observe(document,{childList:!0,subtree:!0});function a(t){const o={};return t.integrity&&(o.integrity=t.integrity),t.referrerPolicy&&(o.referrerPolicy=t.referrerPolicy),t.crossOrigin==="use-credentials"?o.credentials="include":t.crossOrigin==="anonymous"?o.credentials="omit":o.credentials="same-origin",o}function s(t){if(t.ep)return;t.ep=!0;const o=a(t);fetch(t.href,o)}})();const d=()=>`
     <header class="glass-panel" style="position: sticky; top: 1rem; margin: 1rem auto; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; max-width: 1200px; z-index: 100;">
       <a href="/" style="font-family: var(--font-heading); font-size: 1.5rem; font-weight: 700; color: var(--color-text-primary); display: flex; align-items: center; gap: 0.5rem;">
         <span style="color: var(--color-accent);">Antigravity</span> Blog
@@ -46,6 +46,30 @@
         <p style="font-size: 0.875rem; color: var(--color-text-primary); opacity: 0.5;">&copy; 2025 Antigravity. All rights reserved.</p>
       </div>
     </footer>
+  `,f=e=>`
+    <article class="container" style="padding-top: 2rem; padding-bottom: 4rem; max-width: 800px; animation: fadeIn 0.5s ease;">
+      <a href="#" id="back-home" style="display: inline-block; margin-bottom: 2rem; color: var(--color-text-secondary);">&larr; 홈으로 돌아가기</a>
+      
+      <header style="margin-bottom: 3rem; text-align: center;">
+        <span style="color: var(--color-accent); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">${e.category}</span>
+        <h1 style="font-size: 2.5rem; font-weight: 800; margin: 1rem 0 1.5rem; line-height: 1.2;">${e.title}</h1>
+        <div style="display: flex; justify-content: center; align-items: center; gap: 0.75rem; color: var(--color-text-secondary);">
+            <div style="width: 2.5rem; height: 2.5rem; border-radius: 50%; background: #334155;"></div>
+            <span>${e.author}</span>
+            <span>•</span>
+            <span>${e.date}</span>
+        </div>
+      </header>
+      
+      <div style="height: 400px; background: ${e.imageColor||"#1e293b"}; border-radius: 1rem; margin-bottom: 3rem; position: relative; overflow: hidden;">
+         ${e.image?`<img src="${e.image}" alt="${e.title}" style="width: 100%; height: 100%; object-fit: cover;" />`:`<div style="width: 100%; height: 100%; background: ${e.imageColor};"></div>`}
+         <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);"></div>
+      </div>
+
+          이제 Antigravity와 함께 멋진 블로그를 계속해서 발전시켜 나가보세요.
+        </p>
+      </div>
+    </article>
   `,m=[{id:1,category:"기술",title:"2025년 웹 개발 트렌드: 무엇을 준비해야 할까?",excerpt:"AI 중심의 개발 도구부터 더 빨라진 빌드 시스템까지, 올해 주목해야 할 프론트엔드 생태계의 변화를 심층 분석합니다.",author:"김개발",date:"2025년 3월 15일",imageColor:"linear-gradient(135deg, #6366f1, #a855f7)",content:`
       <p>여기에 본문 내용을 작성합니다. 줄바꿈을 포함하여 긴 글을 쓸 수 있습니다.</p>
       <p>HTML 태그를 직접 사용할 수도 있습니다.</p>
@@ -62,7 +86,7 @@
       <p>본문에도 이미지를 넣을 수 있습니다:</p>
       <img src="/blog/images/design.png" alt="샘플 이미지" style="width: 100%; border-radius: 8px; margin: 2rem 0;">
       <p>위와 같이 <code>&lt;img&gt;</code> 태그를 사용하여 본문 중간에 이미지를 삽입할 수 있습니다.</p>
-    `}];let a={view:"home",postId:null};const g=()=>`
+    `}];let i={view:"home",postId:null};const g=()=>`
     ${d()}
 
 <main class="container" style="padding-top: 4rem; padding-bottom: 4rem;">
@@ -97,8 +121,8 @@
 </main>
 
     ${c()}
-`,f=e=>{const i=m.find(r=>r.id===parseInt(e));return i?`
+`,y=e=>{const r=m.find(a=>a.id===parseInt(e));return r?`
     ${d()}
-    ${PostDetail(i)}
+    ${f(r)}
     ${c()}
-`:g()},l=()=>{const e=document.querySelector("#app");a.view==="home"?e.innerHTML=g():a.view==="detail"&&(e.innerHTML=f(a.postId)),y()},y=()=>{document.querySelectorAll('a[href="#"]').forEach(r=>{r.addEventListener("click",n=>n.preventDefault())}),document.querySelectorAll(".post-link").forEach(r=>{r.addEventListener("click",n=>{const t=r.dataset.id;a.view="detail",a.postId=t,window.scrollTo(0,0),l()})});const e=document.getElementById("back-home");e&&e.addEventListener("click",r=>{r.preventDefault(),a.view="home",a.postId=null,window.scrollTo(0,0),l()});const i=document.querySelector('header a[href="/"]');i&&i.addEventListener("click",r=>{r.preventDefault(),a.view="home",l()})};l();
+`:g()},l=()=>{const e=document.querySelector("#app");window.scrollTo(0,0),i.view==="home"?e.innerHTML=g():i.view==="detail"&&(e.innerHTML=y(i.postId))},h=()=>{document.querySelector("#app").addEventListener("click",r=>{const a=r.target.closest(".post-link");if(a){r.preventDefault();const n=a.dataset.id;i.view="detail",i.postId=n,l();return}if(r.target.closest("#back-home")){r.preventDefault(),i.view="home",i.postId=null,l();return}if(r.target.closest('header a[href="/"]')){r.preventDefault(),i.view="home",l();return}r.target.closest('a[href="#"]')&&r.preventDefault()})};h();l();l();
