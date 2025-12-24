@@ -12,11 +12,13 @@
         </ul>
       </nav>
     </header>
-  `,g=e=>`
+  `,p=e=>`
     <article class="glass-panel" style="overflow: hidden; transition: transform var(--transition-smooth), box-shadow var(--transition-smooth); cursor: pointer; display: flex; flex-direction: column; height: 100%;">
-      <div style="height: 200px; background: ${e.imageColor||"linear-gradient(45deg, #3b82f6, #8b5cf6)"}; position: relative; overflow: hidden;">
-         <!-- Placeholder for image -->
-         <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.2);"></div>
+      <div style="height: 12rem; overflow: hidden; position: relative;">
+        ${e.image?`<img src="${e.image}" alt="${e.title}" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;" />`:`<div style="width: 100%; height: 100%; background: ${e.imageColor||"linear-gradient(45deg, #3b82f6, #8b5cf6)"};"></div>`}
+        <div style="position: absolute; top: 1rem; left: 1rem; background: rgba(30, 41, 59, 0.8); backdrop-filter: blur(4px); padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.875rem; color: #e2e8f0; border: 1px solid rgba(255,255,255,0.1);">
+          ${e.category}
+        </div>
       </div>
       <div style="padding: 1.5rem; flex: 1; display: flex; flex-direction: column;">
         <span style="color: var(--color-accent); font-size: 0.875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">${e.category}</span>
@@ -55,7 +57,12 @@
         <li>HTML 태그를 사용할 수 있습니다.</li>
         <li>이미지 그라데이션 색상을 변경하여 분위기를 바꿀 수 있습니다.</li>
       </ul>
-    `}];let a={view:"home",postId:null};const p=()=>`
+    `},{id:8,category:"사진",title:"이미지가 포함된 포스트 예시",excerpt:"이제 블로그에 멋진 커버 이미지를 추가할 수 있습니다. 이미지를 넣는 방법을 확인해보세요.",author:"관리자",date:"2025년 12월 25일",image:"/blog/images/tech.png",content:`
+      <p>커버 이미지가 적용된 포스트입니다.</p>
+      <p>본문에도 이미지를 넣을 수 있습니다:</p>
+      <img src="/blog/images/design.png" alt="샘플 이미지" style="width: 100%; border-radius: 8px; margin: 2rem 0;">
+      <p>위와 같이 <code>&lt;img&gt;</code> 태그를 사용하여 본문 중간에 이미지를 삽입할 수 있습니다.</p>
+    `}];let a={view:"home",postId:null};const g=()=>`
     ${d()}
 
 <main class="container" style="padding-top: 4rem; padding-bottom: 4rem;">
@@ -82,7 +89,7 @@
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
       ${m.map(e=>`
                 <div class="post-link" data-id="${e.id}">
-                  ${g(e)}
+                  ${p(e)}
                 </div>
               `).join("")}
     </div>
@@ -94,4 +101,4 @@
     ${d()}
     ${PostDetail(i)}
     ${c()}
-`:p()},l=()=>{const e=document.querySelector("#app");a.view==="home"?e.innerHTML=p():a.view==="detail"&&(e.innerHTML=f(a.postId)),y()},y=()=>{document.querySelectorAll('a[href="#"]').forEach(r=>{r.addEventListener("click",n=>n.preventDefault())}),document.querySelectorAll(".post-link").forEach(r=>{r.addEventListener("click",n=>{const t=r.dataset.id;a.view="detail",a.postId=t,window.scrollTo(0,0),l()})});const e=document.getElementById("back-home");e&&e.addEventListener("click",r=>{r.preventDefault(),a.view="home",a.postId=null,window.scrollTo(0,0),l()});const i=document.querySelector('header a[href="/"]');i&&i.addEventListener("click",r=>{r.preventDefault(),a.view="home",l()})};l();
+`:g()},l=()=>{const e=document.querySelector("#app");a.view==="home"?e.innerHTML=g():a.view==="detail"&&(e.innerHTML=f(a.postId)),y()},y=()=>{document.querySelectorAll('a[href="#"]').forEach(r=>{r.addEventListener("click",n=>n.preventDefault())}),document.querySelectorAll(".post-link").forEach(r=>{r.addEventListener("click",n=>{const t=r.dataset.id;a.view="detail",a.postId=t,window.scrollTo(0,0),l()})});const e=document.getElementById("back-home");e&&e.addEventListener("click",r=>{r.preventDefault(),a.view="home",a.postId=null,window.scrollTo(0,0),l()});const i=document.querySelector('header a[href="/"]');i&&i.addEventListener("click",r=>{r.preventDefault(),a.view="home",l()})};l();
