@@ -1,8 +1,10 @@
 backend:
   name: github
-  repo: junker2029/blog # Path to your GitHub repository
+  repo: junker2029/blog
   branch: main
   site_url: https://junker2029.github.io/blog/
+
+local_backend: true
 
 media_folder: "public/images/uploads" # Media files will be stored in the repo under public/images/uploads
 public_folder: "/images/uploads" # The src attribute for uploaded media will begin with /images/uploads
