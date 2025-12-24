@@ -1,10 +1,10 @@
 ---
 layout: blog
-title: "Decap CMS와 함께하는 새로운 시작"
-category: "공지사항"
-date: "2025-12-25T12:00:00.000Z"
-author: "관리자"
-image: "/images/uploads/tech-cover.jpg"
+title: Decap CMS와 함께하는 새로운 시작
+category: 공지사항
+date: 2025-12-25T12:00:00.000Z
+author: 관리자
+image: ""
 ---
 
 ## 환영합니다!
