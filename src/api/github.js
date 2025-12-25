@@ -4,6 +4,32 @@ const REPO_OWNER = 'junker2029';
 const REPO_NAME = 'blog';
 const API_URL = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/issues`;
 
+export const createPost = async (token, { title, body, labels }) => {
+    try {
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: {
+                'Authorization': `token ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                title,
+                body,
+                labels
+            })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || `Error: ${response.status}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        throw error;
+    }
+};
+
 export const fetchPosts = async () => {
     try {
         const response = await fetch(API_URL);
