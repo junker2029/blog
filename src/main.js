@@ -3,7 +3,8 @@ import { Header } from './components/Header.js'
 import { PostCard } from './components/PostCard.js'
 import { Footer } from './components/Footer.js'
 import { PostDetail } from './components/PostDetail.js'
-import { fetchPosts } from './api/github.js'
+import { Admin } from './components/Admin.js'
+import { fetchPosts, createPost } from './api/github.js'
 
 // State
 let state = {
@@ -111,6 +112,8 @@ const render = () => {
     app.innerHTML = renderHome();
   } else if (state.view === 'detail') {
     app.innerHTML = renderDetail(state.postId);
+  } else if (state.view === 'admin') {
+    app.innerHTML = Admin();
   }
 };
 
@@ -154,10 +157,52 @@ const setupGlobalEvents = () => {
       e.preventDefault();
     }
   });
+
+  app.addEventListener('submit', async (e) => {
+    if (e.target.id === 'admin-form') {
+      e.preventDefault();
+
+      const token = document.getElementById('github-token').value;
+      const title = document.getElementById('post-title').value;
+      const labels = document.getElementById('post-labels').value;
+      const body = document.getElementById('post-body').value;
+
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      const originalText = submitBtn.innerText;
+      submitBtn.innerText = '업로드 중...';
+      submitBtn.disabled = true;
+
+      try {
+        await createPost(token, {
+          title,
+          body,
+          labels: labels ? labels.split(',').map(l => l.trim()) : []
+        });
+        alert('글이 성공적으로 작성되었습니다!');
+        e.target.reset();
+      } catch (error) {
+        console.error(error);
+        alert('글 작성 실패: ' + error.message);
+      } finally {
+        submitBtn.innerText = originalText;
+        submitBtn.disabled = false;
+      }
+    }
+  });
 };
 
 const init = async () => {
   setupGlobalEvents();
+
+  // Check URL for admin page
+  // Handle both root path and subdirectory path (e.g. /blog/admin)
+  if (window.location.pathname.endsWith('/admin') || window.location.pathname.endsWith('/admin/')) {
+    state.view = 'admin';
+    state.isLoading = false;
+    render();
+    return;
+  }
+
   render(); // Show loading state
 
   try {
